@@ -21,6 +21,10 @@ class PEP425Extras(object):
     return platform.startswith('macosx')
 
   @classmethod
+  def is_linux_platform(cls, platform):
+    return platform.startswith('linux')
+
+  @classmethod
   def parse_macosx_tag(cls, platform_tag):
     invalid_tag = ValueError('invalid macosx tag: %s' % platform_tag)
     if not cls.is_macosx_platform(platform_tag):
@@ -55,6 +59,9 @@ class PEP425Extras(object):
     if cls.is_macosx_platform(platform):
       for plat in cls.iter_compatible_osx_platforms(platform):
         yield plat
+    elif cls.is_linux_platform(platform):
+      yield platform
+      yield platform.replace('linux', 'manylinux1')
     else:
       yield platform
 
